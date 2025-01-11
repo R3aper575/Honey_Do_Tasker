@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  #app {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  #task-input, #generate-schedule-container {
+    margin-bottom: 20px;
+  }
+  
+  input, select, button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  th, td {
+    word-wrap: break-word;
+  }
+
+  #schedule-container {
+    margin-top: 20px;
+  }
+  
+  .day-section {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .day-section h3 {
+    margin-top: 0;
+    text-align: left;
+  }
+  
+  .day-section ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .day-section ul li {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .day-section ul li:last-child {
+    border-bottom: none;
+  }
+  
