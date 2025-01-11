@@ -1,96 +1,115 @@
+/* General body styling */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 0;
-  }
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  #app {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  #task-input, #generate-schedule-container {
-    margin-bottom: 20px;
-  }
-  
-  input, select, button {
-    margin: 5px;
-    padding: 10px;
-    font-size: 14px;
-  }
-  
-  button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  th, td {
-    word-wrap: break-word;
-  }
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 0;
+}
 
-  #schedule-container {
-    margin-top: 20px;
-  }
-  
-  .day-section {
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  .day-section h3 {
-    margin-top: 0;
-    text-align: left;
-  }
-  
-  .day-section ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .day-section ul li {
-    padding: 5px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .day-section ul li:last-child {
-    border-bottom: none;
-  }
-  
+/* Header styling */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#app {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Task input container */
+#task-input {
+  margin-bottom: 20px;
+}
+
+/* Input, select, and button styling */
+input, select, button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Button styling */
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:disabled {
+  background-color: #ddd;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+th, td {
+  word-wrap: break-word;
+}
+
+/* Schedule container */
+#schedule-container {
+  margin-top: 20px;
+}
+
+/* Styling for each day's schedule section */
+.day-section {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fafafa;
+}
+
+.day-section h3 {
+  margin-top: 0;
+  text-align: left;
+}
+
+.day-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.day-section ul li {
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.day-section ul li:last-child {
+  border-bottom: none;
+}
+
+/* Focus styling for accessibility */
+input:focus, select:focus, button:focus {
+  outline: 2px solid #4CAF50;
+}

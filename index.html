@@ -1,87 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      padding: 0;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    #app {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    input, select, button {
-      margin: 5px;
-      padding: 5px;
-      font-size: 14px;
-    }
-
-    button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #f2f2f2;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    tr:hover {
-      background-color: #f1f1f1;
-    }
-
-    th, td {
-      word-wrap: break-word;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendar Task App</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <h1>Calendar Task App</h1>
   <div id="app">
-    <input type="text" id="task-name" placeholder="Enter task name" />
-    <select id="task-frequency">
-      <option value="daily">Daily</option>
-      <option value="weekly">Weekly</option>
-      <option value="bi-weekly">Bi-Weekly</option>
-      <option value="monthly">Monthly</option>
-      <option value="quarterly">Quarterly</option>
-      <option value="semi-annually">Semi-Annually</option>
-      <option value="annually">Annually</option>
-    </select>
-    <select id="task-priority">
-      <option value="high">High</option>
-      <option value="mid" selected>Mid</option>
-      <option value="low">Low</option>
-    </select>
-    <button id="add-task">Add Task</button>
+    <!-- Task Input -->
+    <div id="task-input">
+      <input type="text" id="task-name" placeholder="Enter task name" />
+      <select id="task-frequency">
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="bi-weekly">Bi-Weekly</option>
+        <option value="monthly">Monthly</option>
+      </select>
+      <select id="task-priority">
+        <option value="high">High</option>
+        <option value="mid" selected>Mid</option>
+        <option value="low">Low</option>
+      </select>
+      <button id="add-task">Add Task</button>
+    </div>
+
+    <!-- Generate Schedule Buttons -->
+    <div id="generate-schedule-container">
+      <button id="generate-schedule">Generate Weekly Schedule</button>
+      <button id="clear-schedule">Clear Weekly Schedule</button>
+    </div>
+
+    <!-- Task List -->
     <h2>Task List</h2>
     <table id="task-table">
       <thead>
@@ -96,6 +47,14 @@
         <!-- Dynamic task rows will be added here -->
       </tbody>
     </table>
+
+    <!-- Weekly Schedule -->
+    <h2>This Week's Schedule</h2>
+    <div id="schedule-container">
+      <!-- Day-based schedule will be dynamically added here -->
+    </div>
   </div>
+
   <script src="renderer.js"></script>
 </body>
+</html>

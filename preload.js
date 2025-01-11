@@ -1,8 +1,11 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-// Expose APIs to the renderer process securely
 contextBridge.exposeInMainWorld('electronAPI', {
+  addTask: (task) => ipcRenderer.invoke('add-task', task),
   getTasks: () => ipcRenderer.invoke('get-tasks'),
-  addTask: (taskData) => ipcRenderer.invoke('add-task', taskData),
-  deleteTask: (taskId) => ipcRenderer.invoke('delete-task', taskId), 
+  deleteTask: (taskId) => ipcRenderer.invoke('delete-task', taskId),
+  generateWeeklySchedule: (startDate, endDate) =>
+    ipcRenderer.invoke('generate-weekly-schedule', startDate, endDate),
+  getWeeklySchedule: () => ipcRenderer.invoke('get-weekly-schedule'),
+  clearSchedule: () => ipcRenderer.invoke('clear-schedule'),
 });
