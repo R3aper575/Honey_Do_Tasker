@@ -1,6 +1,9 @@
 # Ignore node_modules
 node_modules/
 
+# Ignore individual tasks.db for now
+tasks.db
+
 # Ignore build and cache folders
 dist/
 .cache/
