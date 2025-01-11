@@ -1,0 +1,14 @@
+# Ignore node_modules
+node_modules/
+
+# Ignore build and cache folders
+dist/
+.cache/
+
+# Ignore database and logs
+tasks.db
+*.log
+
+# Ignore IDE-specific files
+.vscode/
+.DS_Store
