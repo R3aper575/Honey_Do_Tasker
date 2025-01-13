@@ -1,104 +1,67 @@
-const { format, addDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } = require('date-fns');
+const { format } = require('date-fns');
 
-/**
- * Generates a weekly schedule for tasks based on frequency and priority.
- *
- * @param {Array} tasks - List of tasks from the database.
- * @param {String} startDate - The start date of the week (YYYY-MM-DD).
- * @param {String} endDate - The end date of the week (YYYY-MM-DD).
- * @returns {Object} A schedule object with dates as keys and an array of tasks for each day.
- */
-const generateSchedule = (tasks, startDate, endDate) => {
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function generateSchedule(tasks, startDate, endDate) {
+  // Get the start and end dates as Date objects
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  // Create an array of all days in the week (Monday to Sunday)
+  const weekDays = [];
+  for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+    weekDays.push(format(new Date(date), 'yyyy-MM-dd'));
+  }
+
+  // Shuffle tasks to introduce randomness
+  shuffleArray(tasks);
+
+  // Initialize the schedule
   const schedule = {};
-  const dateRange = getDateRange(startDate, endDate);
+  weekDays.forEach((day) => (schedule[day] = []));
 
-  // Initialize the schedule with empty arrays for each date
-  dateRange.forEach((date) => {
-    schedule[date] = [];
-  });
-
-  // Sort tasks by priority (High -> Mid -> Low)
-  tasks.sort((a, b) => {
-    const priorityMap = { high: 1, mid: 2, low: 3 };
-    return priorityMap[a.priority] - priorityMap[b.priority];
-  });
-
-  // Assign tasks to the schedule
+  // Sequentially assign tasks based on frequency
+  let dayIndex = 0;
   tasks.forEach((task) => {
-    const candidateDates = getCandidateDates(task.frequency, startDate, endDate);
+    switch (task.frequency) {
+      case 'daily':
+        // Assign the task to every day of the week
+        weekDays.forEach((day) => {
+          schedule[day].push(task);
+        });
+        break;
 
-    for (const date of candidateDates) {
-      if (schedule[date] && schedule[date].length < 3) {
-        // Assign the task to this date
-        schedule[date].push(task);
-        break; // Move to the next task
-      }
+      case 'weekly':
+        // Assign the task to one day in the week, sequentially
+        schedule[weekDays[dayIndex]].push(task);
+        dayIndex = (dayIndex + 1) % weekDays.length; // Move to the next day
+        break;
+
+      case 'bi-weekly':
+        // Assign the task to two days in the week, sequentially
+        for (let i = 0; i < 2; i++) {
+          schedule[weekDays[dayIndex]].push(task);
+          dayIndex = (dayIndex + 1) % weekDays.length; // Move to the next day
+        }
+        break;
+
+      case 'monthly':
+        // Assign the task to one day in the week, sequentially
+        schedule[weekDays[dayIndex]].push(task);
+        dayIndex = (dayIndex + 1) % weekDays.length; // Move to the next day
+        break;
+
+      default:
+        console.warn(`Unknown frequency '${task.frequency}' for task '${task.name}'.`);
     }
   });
 
   return schedule;
-};
+}
 
-/**
- * Returns a list of candidate dates for a task based on its frequency.
- *
- * @param {String} frequency - The frequency of the task (daily, weekly, bi-weekly, monthly).
- * @param {String} startDate - The start date of the week (YYYY-MM-DD).
- * @param {String} endDate - The end date of the week (YYYY-MM-DD).
- * @returns {Array} An array of date strings in YYYY-MM-DD format.
- */
-const getCandidateDates = (frequency, startDate, endDate) => {
-  const dates = [];
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-
-  if (frequency === 'daily') {
-    // Add all dates in the range
-    for (let d = start; d <= end; d = addDays(d, 1)) {
-      dates.push(format(d, 'yyyy-MM-dd'));
-    }
-  } else if (frequency === 'weekly') {
-    // Add one random weekday within the range
-    const weekStart = startOfWeek(start);
-    for (let week = weekStart; week <= end; week = addDays(week, 7)) {
-      dates.push(format(week, 'yyyy-MM-dd'));
-    }
-  } else if (frequency === 'bi-weekly') {
-    // Add every other week
-    const weekStart = startOfWeek(start);
-    for (let week = weekStart; week <= end; week = addDays(week, 14)) {
-      dates.push(format(week, 'yyyy-MM-dd'));
-    }
-  } else if (frequency === 'monthly') {
-    // Add one random day in each month
-    const monthStart = startOfMonth(start);
-    for (let month = monthStart; month <= end; month = addDays(endOfMonth(month), 1)) {
-      dates.push(format(month, 'yyyy-MM-dd'));
-    }
-  }
-
-  return dates;
-};
-
-/**
- * Generates an array of date strings between a start and end date.
- *
- * @param {String} startDate - The start date (YYYY-MM-DD).
- * @param {String} endDate - The end date (YYYY-MM-DD).
- * @returns {Array} An array of date strings in YYYY-MM-DD format.
- */
-const getDateRange = (startDate, endDate) => {
-  const dates = [];
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-
-  for (let d = start; d <= end; d = addDays(d, 1)) {
-    dates.push(format(d, 'yyyy-MM-dd'));
-  }
-
-  return dates;
-};
-
-module.exports = {
-  generateSchedule,
-};
+module.exports = { generateSchedule };

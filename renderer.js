@@ -65,50 +65,69 @@ document.addEventListener('DOMContentLoaded', () => {
   // Function to display the current week's schedule
   const displayWeeklySchedule = async () => {
     try {
+      const now = new Date();
+  
+      // Calculate start of the week (Monday)
+      const currentDay = now.getDay() + 1;
+      const offsetToMonday = currentDay === 0 ? -6 : 1 - currentDay;
+      const startOfWeek = new Date(now);
+      startOfWeek.setDate(now.getDate() + offsetToMonday);
+  
+      // Format the start and end of the week
+      const startDate = startOfWeek.toISOString().split('T')[0];
+      const endDate = new Date(startOfWeek);
+      endDate.setDate(startOfWeek.getDate() + 6);
+  
+      console.log(`Displaying schedule for the week: ${startDate} to ${endDate}`); // Debug log
+  
       const schedule = await window.electronAPI.getWeeklySchedule();
-
+  
+      // Define days of the week
       const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  
+      // Group tasks by day
       const tasksByDay = {};
       daysOfWeek.forEach((day) => {
         tasksByDay[day] = [];
       });
-
+  
       schedule.forEach((entry) => {
         const dayOfWeek = new Date(entry.scheduled_date).toLocaleString('en-US', { weekday: 'long' });
         if (tasksByDay[dayOfWeek]) {
           tasksByDay[dayOfWeek].push(entry);
         }
       });
-
+  
+      // Clear the current table
       const scheduleContainer = document.getElementById('schedule-container');
       scheduleContainer.innerHTML = '';
-
+  
+      // Populate the schedule with tasks for each day
       daysOfWeek.forEach((day) => {
         const daySection = document.createElement('div');
         daySection.classList.add('day-section');
-
+  
         const dayHeading = document.createElement('h3');
         dayHeading.textContent = day;
         daySection.appendChild(dayHeading);
-
+  
         const taskList = document.createElement('ul');
         tasksByDay[day].forEach((task) => {
           const taskItem = document.createElement('li');
           taskItem.textContent = `${task.name} (${task.frequency}, ${task.priority}) - ${task.status}`;
           taskList.appendChild(taskItem);
         });
-
+  
+        // If no tasks, add a placeholder
         if (tasksByDay[day].length === 0) {
           const noTasksItem = document.createElement('li');
           noTasksItem.textContent = 'No tasks scheduled.';
           taskList.appendChild(noTasksItem);
         }
-
+  
         daySection.appendChild(taskList);
         scheduleContainer.appendChild(daySection);
       });
-
-      logInputStatus('After Display Weekly Schedule');
     } catch (error) {
       console.error('Error fetching weekly schedule:', error);
       alert('Failed to fetch weekly schedule. Check the console for details.');
@@ -143,16 +162,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   generateScheduleButton.addEventListener('click', async () => {
     console.log('Generate Weekly Schedule clicked');
+  
+    // Get the current date
+    const now = new Date();
+  
+    // Calculate the start of the week (Monday)
+    const currentDay = now.getDay() + 1; // Sunday = 0, Monday = 1, ..., Saturday = 6
+    const offsetToMonday = currentDay === 0 ? -6 : 1 - currentDay; // Adjust for Sunday being 0
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() + offsetToMonday);
+  
+    // Calculate the end of the week (Sunday)
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+  
+    // Format dates as yyyy-MM-dd
+    const startDate = startOfWeek.toISOString().split('T')[0];
+    const endDate = endOfWeek.toISOString().split('T')[0];
+  
+    console.log(`Generating schedule for: ${startDate} to ${endDate}`); // Debug log
+  
     try {
-      const response = await window.electronAPI.generateWeeklySchedule('2025-01-01', '2025-01-07');
+      const response = await window.electronAPI.generateWeeklySchedule(startDate, endDate);
       alert(response);
       await displayWeeklySchedule();
+      console.log('Generate Weekly Schedule completed');
     } catch (error) {
       console.error('Error generating schedule:', error);
     }
-    taskNameInput.disabled = false; // Ensure input is enabled
-    taskNameInput.focus(); // Reset focus to the input
-    console.log('Generate Weekly Schedule completed');
   });
   
   clearScheduleButton.addEventListener('click', async () => {
